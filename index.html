@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giphy API</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
+
+    <style>
+
+        * {
+            margin: 0;
+            box-sizing: border-box;
+            /* overflow: hidden; */
+        }
+
+        img {
+            aspect-ratio: 1/1;
+            width: 400px;
+            grid-row: 1/2;
+            border: solid 7px orange;
+            border-radius: 10px;
+            border-style: inset;
+        }
+
+        h1{ 
+            position: relative;
+            font-size: 10vw;
+            font-weight: bold;
+            color: transparent;
+            -webkit-text-stroke:black 2px;
+            font-family: 'Bungee';
+            background-image: url('/images/psyche.avif');
+            background-clip: text;
+            -webkit-background-clip: text;
+            
+
+            
+        }
+
+        body { 
+            display: grid;
+            /* aspect-ratio: 1/1; */
+            place-items: center;
+            background-image: url('/images/rain.jpeg');
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .wrapper {
+            position: relative;
+            display: grid; 
+            grid-template-rows: 1fr 5vh;
+            gap: 10px;
+        }
+
+        .btnsearch {
+            position: relative;
+            grid-row: 2/3;
+            display: flex;
+            justify-content: space-between;
+
+        }
+
+        button {
+            background-color: orangered;
+            font-family: 'Bungee';
+            border-radius: 10px;
+            border: solid black 2px;
+        }
+
+        input {
+            background-color: yellow;
+            border: solid black 2px;
+            border-radius: 10px;
+            font-family: 'Bungee';
+            font-weight: lighter;
+            width: 60%;   
+        }
+
+        video {
+            position:absolute;
+            z-index: 1;
+            min-height: 100%;
+            min-width: 100%;
+            right: 0;
+            bottom: 0;
+
+        }
+
+        .nonvideo {
+            position: relative;
+            z-index: 2;
+            display:grid;
+            place-items: center;
+        }
+
+
+    </style>
+</head>
+<body>
+
+
+
+    <video autoplay muted loop id="myVideo">
+        <source src="/images/rain video.mp4" type="video/mp4">
+      </video>
+    
+    
+    <div class="nonvideo">
+        <h1>Giferator</h1>
+        <div class="wrapper">
+            <img src="//unsplash.it/500/500" >
+            <div class="btnsearch">
+                <button>New gif</button>
+                <input type="text">
+            </div>
+        
+        </div>
+    
+    </div>
+
+    <!-- <img src="//unsplash.it/500/500" > -->
+
+    <script>
+
+        const img = document.querySelector('img');
+        const btn = document.querySelector('button');
+        const input = document.querySelector('input');
+     
+
+        let giphy = 'https://api.giphy.com/v1/gifs/random?api_key=iyt4abTerCV5CzgWKkFiksYpUWRL8oAb&tag='
+        console.log(btn);
+        let data; 
+
+        input.addEventListener('keypress', (e) => {
+
+            if(e.key === 'Enter') {
+            let search = input.value;
+            fetchGif(search);
+            }
+  
+        })
+
+        const fetchGif = function(search = 'cats') {
+            console.log(`${giphy}${search}`)
+            fetch(`${giphy}${search}`, {mode: 'cors'})
+            .then((response) => {
+                return response.json();
+            })
+            .then((response) => {
+                data = response.data
+                console.log(data)
+                img.src = data.images.downsized.url;
+            })
+            .catch((err) => {
+                console.log('ERROORRR',err)
+                fetchGif('not%20found')
+            })
+        }
+        fetchGif();
+
+        btn.addEventListener('click', () => {
+            let search = input.value;
+            return fetchGif(search);
+        });
+
+
+
+        
+
+        
+    </script>
+</body>
+</html>
