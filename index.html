@@ -143,21 +143,44 @@
   
         })
 
-        const fetchGif = function(search = 'cats') {
+        // const fetchGif =  function(search = 'cats') {
+        //     console.log(`${giphy}${search}`)
+        //     fetch(`${giphy}${search}`, {mode: 'cors'})
+        //     .then((response) => {
+        //         return response.json();
+        //     })
+        //     .then((response) => {
+        //         data = response.data
+        //         console.log(data)
+        //         img.src = data.images.downsized.url;
+        //     })
+        //     .catch((err) => {
+        //         console.log('ERROORRR',err)
+        //         fetchGif('not%20found')
+        //     })
+        // }
+
+        const fetchGif =  async function(search = 'cats') {
+
+
             console.log(`${giphy}${search}`)
-            fetch(`${giphy}${search}`, {mode: 'cors'})
-            .then((response) => {
-                return response.json();
-            })
-            .then((response) => {
-                data = response.data
-                console.log(data)
-                img.src = data.images.downsized.url;
-            })
-            .catch((err) => {
-                console.log('ERROORRR',err)
-                fetchGif('not%20found')
-            })
+            try {
+            const response = await fetch(`${giphy}${search}`, {mode: 'cors'})
+            console.log(response.ok);
+            const jsonres = await response.json();
+            const data = await jsonres.data;
+
+            img.src = data.images.downsized.url;
+            } catch(err) {
+                console.log(err)
+                fetchGif('not found');
+            }
+ 
+
+            // .catch((err) => {
+            //     console.log('ERROORRR',err)
+            //     fetchGif('not%20found')
+            // })
         }
         fetchGif();
 
